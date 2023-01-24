@@ -1,0 +1,69 @@
+import warnings
+
+import cv2
+import mediapipe as mp
+
+mp_drawing = mp.solutions.drawing_utils
+mp_drawing_styles = mp.solutions.drawing_styles
+mp_face_mesh = mp.solutions.face_mesh
+mp_holistic = mp.solutions.holistic
+
+
+draw_mesh = True  # whether the user wants a mesh drawn
+
+path = 'C:/Users/Lady_/Pictures/Questionnaire Images/Not Criminal_01.jpg'  # path to the image
+
+
+def fit_points():  # fit a mesh to the face
+    # set the parameters
+    with mp_face_mesh.FaceMesh(
+            static_image_mode=True,
+            max_num_faces=1,
+            refine_landmarks=True,
+            min_detection_confidence=0.5) as face_mesh:
+        # open the image
+        image = cv2.imread(path)
+        # get the image dimensions
+        h, w, _ = image.shape
+
+        # apply the mesh
+        results = face_mesh.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+
+    # set a bool on whether the results are invalid (at this stage a valid result is just one that contains some data)
+    face_found = bool(results.multi_face_landmarks)
+
+    if face_found:  # if something has been drawn, move to calculate, and possibly draw points
+
+        if draw_mesh:  # if the end user wants a digital representation of the points mapped to the face
+            draw_with_points(image, results)
+
+        landmarks = results.multi_face_landmarks[0].landmark  # create a list of each x, y, z tuple
+
+        for landmark in landmarks:
+            # multiply out the results of the co-ordinates by the width and height to un-normalize them
+            landmark.x *= w
+            landmark.y *= h
+
+        return results.multi_face_landmarks[0].landmark  # return the results to main
+
+    else:  # if no face is found, return warning
+        no_image_warning('Failed to find a face')
+
+
+def draw_with_points(image, results):
+    clean_path = path.split(".")[0]  # prepare a path to save the annotated image to
+
+    annotated_image = image.copy()
+
+    mp_drawing.draw_landmarks(
+        image=annotated_image,
+        landmark_list=results.multi_face_landmarks[0],
+        connections=mp_face_mesh.FACEMESH_TESSELATION,
+        landmark_drawing_spec=mp_drawing_styles
+        .get_default_face_mesh_tesselation_style())
+
+    cv2.imwrite(clean_path + '_annotated.png', annotated_image)
+
+
+def no_image_warning(message):  # no face found
+    warnings.warn(message)
