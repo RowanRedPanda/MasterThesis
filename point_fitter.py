@@ -1,5 +1,8 @@
 import warnings
 
+import sys
+import os
+
 import cv2
 import mediapipe as mp
 
@@ -9,12 +12,29 @@ mp_face_mesh = mp.solutions.face_mesh
 mp_holistic = mp.solutions.holistic
 
 
-draw_mesh = True  # whether the user wants a mesh drawn
-
-path = 'C:/Users/Lady_/Pictures/Questionnaire Images/Not Criminal_01.jpg'  # path to the image
-
-
 def fit_points():  # fit a mesh to the face
+    # user inputs
+    while True:
+        user_input = input("Enter the path of your image: ")
+        if not os.path.exists(user_input):
+            print("File not found at " + str(user_input))
+            continue
+        else:
+            path = user_input
+            break
+    while True:
+        user_input = input("Would you like a drawn mesh? Y/N: ")
+        user_input = user_input.lower()
+        if user_input != "y" and user_input != "n":
+            print("Please enter Y or N")
+            continue
+        else:
+            if user_input == "y":
+                draw_mesh = True
+            else:
+                draw_mesh = False
+            break
+
     # set the parameters
     with mp_face_mesh.FaceMesh(
             static_image_mode=True,
@@ -35,7 +55,7 @@ def fit_points():  # fit a mesh to the face
     if face_found:  # if something has been drawn, move to calculate, and possibly draw points
 
         if draw_mesh:  # if the end user wants a digital representation of the points mapped to the face
-            draw_with_points(image, results)
+            draw_with_points(image, results, path)
 
         landmarks = results.multi_face_landmarks[0].landmark  # create a list of each x, y, z tuple
 
@@ -50,7 +70,7 @@ def fit_points():  # fit a mesh to the face
         no_image_warning('Failed to find a face')
 
 
-def draw_with_points(image, results):
+def draw_with_points(image, results, path):
     clean_path = path.split(".")[0]  # prepare a path to save the annotated image to
 
     annotated_image = image.copy()
