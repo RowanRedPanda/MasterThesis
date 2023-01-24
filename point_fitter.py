@@ -1,8 +1,5 @@
 import warnings
-
-import sys
 import os
-
 import cv2
 import mediapipe as mp
 
@@ -34,6 +31,7 @@ def fit_points():  # fit a mesh to the face
             else:
                 draw_mesh = False
             break
+    # end of user inputs
 
     # set the parameters
     with mp_face_mesh.FaceMesh(
@@ -67,7 +65,7 @@ def fit_points():  # fit a mesh to the face
         return results.multi_face_landmarks[0].landmark  # return the results to main
 
     else:  # if no face is found, return warning
-        no_image_warning('Failed to find a face')
+        user_warning('Failed to find a face')
 
 
 def draw_with_points(image, results, path):
@@ -85,5 +83,5 @@ def draw_with_points(image, results, path):
     cv2.imwrite(clean_path + '_annotated.png', annotated_image)
 
 
-def no_image_warning(message):  # no face found
+def user_warning(message):  # generate warnings
     warnings.warn(message)
