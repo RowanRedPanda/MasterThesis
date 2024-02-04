@@ -1,5 +1,6 @@
 import numpy
 
+# Comment - What do the numbers mean?
 relevant_points = [
     (234, "Leftmost"),
     (454, "Rightmost"),
@@ -33,6 +34,7 @@ landmark_dict = {}
 measurement_dict = {}
 
 
+# Summarise what this method is doing
 def calculate(landmarks):
     for point in relevant_points:  # For each point in the list of relevant points, create a dictionary entry
         # use the relevant point int from point[0] to index landmarks, i,e point 284 is landmarks[284]
@@ -66,6 +68,7 @@ def calculate(landmarks):
     return measurement_dict
 
 
+# Summarise what this method is doing
 def dist_calc(landmark_a, landmark_b):
     a = numpy.array(landmark_a)  # convert tuples to numpy arrays
     b = numpy.array(landmark_b)

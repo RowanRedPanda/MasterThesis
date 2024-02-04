@@ -11,6 +11,7 @@ mp_holistic = mp.solutions.holistic
 
 def fit_points():  # fit a mesh to the face
     # user inputs
+    # Probably just explain that this is a basic menu
     while True:
         user_input = input("Enter the path of your image: ")
         if not os.path.exists(user_input):
@@ -34,6 +35,7 @@ def fit_points():  # fit a mesh to the face
     # end of user inputs
 
     # set the parameters
+    # What do these parameters mean?
     with mp_face_mesh.FaceMesh(
             static_image_mode=True,
             max_num_faces=1,
@@ -58,7 +60,7 @@ def fit_points():  # fit a mesh to the face
         landmarks = results.multi_face_landmarks[0].landmark  # create a list of each x, y, z tuple
 
         for landmark in landmarks:
-            # multiply out the results of the co-ordinates by the width and height to un-normalize them
+            # multiply out the results of the co-ordinates by the width and height to de-normalize them
             landmark.x *= w
             landmark.y *= h
 
@@ -68,6 +70,7 @@ def fit_points():  # fit a mesh to the face
         user_warning('Failed to find a face')
 
 
+# Summarise what this method does
 def draw_with_points(image, results, path):
     clean_path = path.split(".")[0]  # prepare a path to save the annotated image to
 
