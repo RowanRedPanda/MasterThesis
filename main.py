@@ -4,10 +4,9 @@ import calculate_distances
 import point_fitter
 
 # user inputs
-# I'd put in a slightly more verbose description of what each menu item is and what it's doing.
 while True:
     user_input = input("""Would you like to measure faces, or predict a face?
-    Enter 0 for measurement and 1 for prediction:""")
+    Enter 0 for measurement and 1 for prediction:""")  # Prediction functionality has been removed, selecting 0 to measure a face is the only function this has
     user_input = int(user_input)
     if user_input != 0 and user_input != 1:
         print("Please enter 0 or 1")
@@ -16,7 +15,7 @@ while True:
         if user_input == 0:  # Measuring faces
             while True:
                 user_input = input("""Would you like to measure a single face, or an entire folder?
-    Enter 0 for single, and 1 for multiple:""")
+    Enter 0 for single, and 1 for multiple:""")  # To accomodate bulk measurements, the user is prompted to select single or multiple
                 user_input = int(user_input)
                 if int(user_input) != 0 and int(user_input) != 1:
                     print("Please enter 0 or 1")
@@ -32,7 +31,7 @@ while True:
                 else:  # Multiple face processing requested
                     landmarks = point_fitter.fit_multiple_images()  # request bulk fitting
                     df = pd.DataFrame(landmarks)
-                    df.to_csv("FullMeasurements.csv", index=False)
+                    df.to_csv("FullMeasurements.csv", index=False)  # For bulk measurements, the measurement data is saved as a csv, for access and reading
                     break
         else:  # Face prediction requested
             # This code has been deliberately removed in order to adhere to ethical restrictions required by the research project
