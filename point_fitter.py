@@ -3,6 +3,8 @@ import os
 import cv2
 import mediapipe as mp
 
+import calculate_distances
+
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_face_mesh = mp.solutions.face_mesh
@@ -32,7 +34,53 @@ def fit_points():  # fit a mesh to the face
                 draw_mesh = False
             break
     # end of user inputs
+    return fit_mesh(draw_mesh, path)
 
+
+def fit_multiple_images():
+    # user inputs
+    while True:
+        user_input = input("Enter the path of your file: ")
+        if not os.path.exists(user_input):
+            print("File not found at " + str(user_input))
+            continue
+        else:
+            path = user_input
+            break
+    while True:
+        user_input = input("Would you like a drawn mesh? Y/N: ")
+        user_input = user_input.lower()
+        if user_input != "y" and user_input != "n":
+            print("Please enter Y or N")
+            continue
+        else:
+            if user_input == "y":
+                draw_mesh = True
+            else:
+                draw_mesh = False
+            break
+    # end of user inputs
+    i = 0
+    j = 0
+    measurements_list = []
+    # path generation
+    for filename in os.listdir(path):
+        print(filename)
+        i += 1
+        image_path = path + '/' + filename
+        landmarks = fit_mesh(draw_mesh, image_path)
+        if bool(landmarks):
+            # method to make measurements
+            returned_dict = calculate_distances.calculate(landmarks)
+            returned_dict["ImageName"] = filename
+            measurements_list.extend([returned_dict])
+            j += 1
+
+    print(str(j) + ' images found and processed out of a total of ' + str(i) + ' files found')
+    return measurements_list
+
+
+def fit_mesh(draw_mesh, path):
     # set the parameters
     with mp_face_mesh.FaceMesh(
             static_image_mode=True,
@@ -65,7 +113,7 @@ def fit_points():  # fit a mesh to the face
         return results.multi_face_landmarks[0].landmark  # return the results to main
 
     else:  # if no face is found, return warning
-        user_warning('Failed to find a face')
+        user_warning('Failed to find a face at ' + path)
 
 
 def draw_with_points(image, results, path):
