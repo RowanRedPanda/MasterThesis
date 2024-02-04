@@ -4,6 +4,7 @@ import calculate_distances
 import point_fitter
 
 # user inputs
+# I'd put in a slightly more verbose description of what each menu item is and what it's doing.
 while True:
     user_input = input("""Would you like to measure faces, or predict a face?
     Enter 0 for measurement and 1 for prediction:""")

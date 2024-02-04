@@ -13,6 +13,7 @@ mp_holistic = mp.solutions.holistic
 
 def fit_points():  # fit a mesh to the face
     # user inputs
+    # Put a few comments here to describe what the program is looking for
     while True:
         user_input = input("Enter the path of your image: ")
         if not os.path.exists(user_input):
@@ -39,6 +40,7 @@ def fit_points():  # fit a mesh to the face
 
 def fit_multiple_images():
     # user inputs
+    # Put a few comments here to describe what the program is looking for
     while True:
         user_input = input("Enter the path of your file: ")
         if not os.path.exists(user_input):
@@ -64,6 +66,7 @@ def fit_multiple_images():
     j = 0
     measurements_list = []
     # path generation
+    # What are we doing here?
     for filename in os.listdir(path):
         print(filename)
         i += 1
@@ -82,6 +85,7 @@ def fit_multiple_images():
 
 def fit_mesh(draw_mesh, path):
     # set the parameters
+    # What do these parameters mean/do?
     with mp_face_mesh.FaceMesh(
             static_image_mode=True,
             max_num_faces=1,
@@ -116,6 +120,7 @@ def fit_mesh(draw_mesh, path):
         user_warning('Failed to find a face at ' + path)
 
 
+# Briefly describe what this method is doing
 def draw_with_points(image, results, path):
     clean_path = path.split(".")[0]  # prepare a path to save the annotated image to
 

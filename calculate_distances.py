@@ -2,6 +2,7 @@ import statistics
 
 import numpy
 
+# What are these points, where do the numbers come from?
 relevant_points = [
     (234, "Leftmost"),
     (454, "Rightmost"),
@@ -46,6 +47,7 @@ relevant_points = [
 ]
 
 
+# Brief description of what this method is doing
 def calculate(landmarks):
     landmark_dict = {}
     measurement_dict = {}
@@ -93,6 +95,7 @@ def calculate(landmarks):
                     measurement_dict_values[i]/measurement_dict_values[j]
     # endregion
     # region Asymmetry measurement
+    # What is the asymmetry measurement, what is it doing?
     measurement_dict["Asymmetry"] = abs(
         (dist_calc(landmark_dict["Leftmost"], landmark_dict["Nose_Tip"]) * norm) -
         (dist_calc(landmark_dict["Rightmost"], landmark_dict["Nose_Tip"]) * norm)
@@ -100,6 +103,7 @@ def calculate(landmarks):
     measurement_dict["Eye Asymmetry"] = abs(measurement_dict["Width of left eye"] - measurement_dict["Width of right eye"])
     # endregion
     # region Derived measurements
+    # What are the derived measurements?
     measurement_dict["Area of nose"] = (measurement_dict["Nose width"] * measurement_dict["Nose length"]) / 2
     measurement_dict["Average eye width"] = statistics.mean([measurement_dict["Width of left eye"], measurement_dict["Width of right eye"]])
     measurement_dict["Average eye height"] = statistics.mean([measurement_dict["Height of left eye"], measurement_dict["Height of right eye"]])
@@ -109,6 +113,7 @@ def calculate(landmarks):
     return measurement_dict
 
 
+# Briefly describe what this method is doing
 def dist_calc(landmark_a, landmark_b):
     a = numpy.array(landmark_a)  # convert tuples to numpy arrays
     b = numpy.array(landmark_b)
