@@ -2,7 +2,9 @@ import statistics
 
 import numpy
 
-# What are these points, where do the numbers come from?
+# This list of points refers to the numerical index as assigned by the mediapipe library:
+# https://github.com/google/mediapipe/blob/master/mediapipe/modules/face_geometry/data/canonical_face_model_uv_visualization.png
+# The points are selected to draw measurements from, rather than using all landmark data
 relevant_points = [
     (234, "Leftmost"),
     (454, "Rightmost"),
@@ -47,7 +49,10 @@ relevant_points = [
 ]
 
 
-# Brief description of what this method is doing
+# On calling calculate, this method creates a dictionary to store landmarks in, and a dictionary to store measurements in
+# Looping through all selected landmarks (as per the above list) the landmark dictionary landmark_dict is populated with the ID and the co-ordinates for easy accessing
+# The measurements dictionary measurement_dict is produced by performing the various measurements as below, and adding each one to the dictionary
+# The measurements dictionary is returned to be called from for csv generation
 def calculate(landmarks):
     landmark_dict = {}
     measurement_dict = {}
@@ -113,7 +118,8 @@ def calculate(landmarks):
     return measurement_dict
 
 
-# Briefly describe what this method is doing
+# This method performs a linear algebra calculation between the two tuples that represent the 3d co-ordinates of two points
+# The two x,y,z co-ordinates of the given points have the distance between them calculated and returned from this
 def dist_calc(landmark_a, landmark_b):
     a = numpy.array(landmark_a)  # convert tuples to numpy arrays
     b = numpy.array(landmark_b)

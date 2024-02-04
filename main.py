@@ -35,7 +35,7 @@ while True:
                     df.to_csv("FullMeasurements.csv", index=False)
                     break
         else:  # Face prediction requested
-            print("This is where face prediction would go")
+            # This code has been deliberately removed in order to adhere to ethical restrictions required by the research project
             break
 
 
